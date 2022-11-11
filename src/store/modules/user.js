@@ -1,19 +1,33 @@
 import {login} from '@/api/sys.js'
+import {TOKEN} from "../../constant";
+import {getItem, setItem} from "../../utils/storage";
+import md5 from 'md5'
 
 export default {
     namespaced: true,
-    state: () => {
+    state: () => ({
+        token: getItem(TOKEN) || '',
 
+    }),
+    mutations: {
+        setToken(state, token) {
+            state.token = token;
+            setItem(TOKEN, token)
+        }
     },
-    mutations: {},
     actions: {
         login(context, userInfo) {
             const {username, password} = userInfo;
-            return new Promise((resolve,reject)=>{
+            return new Promise((resolve, reject) => {
                 login({
                     username,
-                    password: password
+                    password: md5(password)
                 })
+                    .then(data => {
+                        this.commit('user/setToken', data.token)
+                        resolve()
+                    })
+                    .catch(err => reject(err))
             })
         }
     }
