@@ -90,12 +90,12 @@ const loginFromRef = ref(null)
 const store = useStore()
 const router = useRouter()
 const handleLogin = () => {
-  loginFromRef.value.validate(valid => {
+  /*loginFromRef.value.validate(valid => {
     if (!valid) return
 
     loading.value = true
     store
-        .dispatch('user/login', loginForm.value)
+        .dispatch('user/sys', loginForm.value)
         .then(() => {
           loading.value = false
           // 登录后操作
@@ -105,7 +105,8 @@ const handleLogin = () => {
           console.log(err)
           loading.value = false
         })
-  })
+  })*/
+  router.push('/')
 }
 </script>
 
