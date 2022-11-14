@@ -1,15 +1,17 @@
 import {login} from '@/api/sys.js'
+import {setTimeStamp} from "../../utils/auth";
 import {TOKEN} from "../../constant";
-import {getItem, setItem} from "../../utils/storage";
+import {getItem, removeAllItem, setItem} from "../../utils/storage";
 import md5 from 'md5'
 import {getUserInfo} from "../../api/sys";
+import router from "../../router";
 
 export default {
     namespaced: true,
     state: () => ({
         token: getItem(TOKEN) || '',
         userInfo: {},
-        
+
     }),
     mutations: {
         setToken(state, token) {
@@ -30,6 +32,7 @@ export default {
                 })
                     .then(data => {
                         this.commit('user/setToken', data.token)
+                        setTimeStamp()
                         resolve()
                     })
                     .catch(err => reject(err))
@@ -39,6 +42,12 @@ export default {
             const res = await getUserInfo();
             this.commit('user/setUserInfo',res)
             return res
+        },
+        logout (){
+            this.commit('user/setToken','')
+            this.commit('user/setUserInfo',{})
+            removeAllItem()
+            router.push('/login')
         }
     }
 }

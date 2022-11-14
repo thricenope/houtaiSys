@@ -52,6 +52,7 @@
 import {ref} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
+import {setTimeStamp} from "../../utils/auth";
 
 // 数据源
 const loginForm = ref({
@@ -105,7 +106,8 @@ const handleLogin = () => {
           console.log(err)
           loading.value = false
         })
-  })*/
+  })
+  */
   router.push('/')
 }
 </script>
